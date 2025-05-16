@@ -1,131 +1,151 @@
-🚦 Visão Geral do Projeto – Semáforo Inteligente
+# 🚦 Semáforo Inteligente com Arduino
 
-Este projeto tem como objetivo desenvolver um semáforo inteligente, iniciando com conceitos básicos de Arduino e evoluindo até a simulação de um cruzamento urbano realista, com múltiplas vias, sensores e botões para pedestres. A cada etapa, o sistema foi sendo aprimorado com novas funcionalidades, tornando-o mais completo e funcional.
+<p align="center">
+  <img src="https://img.shields.io/badge/status-em%20desenvolvimento-brightgreen?style=for-the-badge" alt="Status do Projeto">
+  <img src="https://img.shields.io/badge/vers%C3%A3o-sprint%203-blue?style=for-the-badge" alt="Versão">
+</p>
 
-🔧 Protótipo 1: Semáforo Básico
-🔗 Ver no Tinkercad
+## 📌 Índice
 
-Objetivo: Entender a conexão de LEDs ao Arduino e programar a sequência de sinais.
+- [Sobre o Projeto](#-sobre-o-projeto)
+- [Protótipos Desenvolvidos](#-protótipos-desenvolvidos)
+  - [Protótipo 1: Semáforo Básico](#protótipo-1-semáforo-básico)
+  - [Protótipo 2: Botão para Pedestres](#protótipo-2-botão-para-pedestres)
+  - [Protótipo 3: Sensor Infravermelho](#protótipo-3-sensor-infravermelho)
+  - [Sprint 3: Cruzamento Inteligente com Maquete Física](#sprint-3-cruzamento-inteligente-com-maquete-física)
+- [Componentes Utilizados](#-componentes-utilizados)
+- [Maquete Física](#-maquete-física)
+- [Conclusão](#-conclusão)
+- [Como Contribuir](#-como-contribuir)
 
-Componentes:
+---
 
-3 LEDs (vermelho, amarelo e verde)
+## 🧠 Sobre o Projeto
 
-Resistores de 220 Ω
+Este projeto visa desenvolver um **semáforo inteligente** utilizando a plataforma Arduino. Iniciamos com conceitos básicos de controle de LEDs e evoluímos para a simulação de um cruzamento urbano realista, incorporando sensores infravermelhos, botões para pedestres e uma maquete física para testes práticos.
 
-Placa Arduino Uno
+---
 
-Protoboard e fios
+## 🔧 Protótipos Desenvolvidos
 
-Funcionamento:
+### Protótipo 1: Semáforo Básico
 
-LED verde acende por 5 segundos
+🔗 [Acessar no Tinkercad](https://www.tinkercad.com/things/crLNLab5RRq-trabalha01)
 
-Em seguida, o amarelo por 2 segundos
+**Objetivo:** Compreender a conexão de LEDs ao Arduino e programar a sequência de sinais.
 
-Depois, o vermelho por 5 segundos
+**Funcionamento:**
 
-O ciclo se repete continuamente
+```plaintext
+1. LED verde acende por 5 segundos
+2. LED amarelo acende por 2 segundos
+3. LED vermelho acende por 5 segundos
+4. O ciclo se repete continuamente
+```
 
-✅ Essa etapa foi essencial para aprender a base do controle de sinais com Arduino.
+---
 
-🚶 Protótipo 2: Botão para Pedestres
-🔗 Ver no Tinkercad
+### Protótipo 2: Botão para Pedestres
 
-Novidade: Adição de um botão para simular o pedido de travessia dos pedestres.
+🔗 [Acessar no Tinkercad](https://www.tinkercad.com/things/fGDRABPrAXn-trabalho02)
 
-Como funciona:
+**Novidade:** Implementação de um botão que permite aos pedestres solicitar a travessia.
 
-O botão pode ser pressionado a qualquer momento.
+**Funcionamento:**
 
-O sistema armazena o pedido e aguarda o momento seguro para ativar o semáforo dos pedestres.
+- O botão pode ser pressionado a qualquer momento.
+- O sistema armazena o pedido e aguarda o momento seguro para ativar o semáforo dos pedestres.
+- O semáforo de veículos fica vermelho e o LED verde para pedestres acende, permitindo a travessia.
 
-O semáforo de carros fica vermelho e o LED "pedestre verde" acende, permitindo a travessia.
+---
 
-🎯 Isso aproxima o sistema da realidade urbana, com controle de travessia sob demanda.
+### Protótipo 3: Sensor Infravermelho
 
-👁️ Protótipo 3: Sensor Infravermelho
-🔗 Ver no Tinkercad
+🔗 [Acessar no Tinkercad](https://www.tinkercad.com/things/lXt8ejKZsI6-trabalho03)
 
-Novidade: Inclusão de sensor infravermelho (IR) para detectar a presença de veículos.
+**Novidade:** Inclusão de sensor infravermelho (IR) para detectar a presença de veículos.
 
-Como funciona:
+**Funcionamento:**
 
-O sensor monitora a presença de carros na via.
+- O sensor monitora a presença de carros na via.
+- Se não há veículos, o tempo do sinal verde é reduzido.
+- Se houver tráfego intenso, o sinal verde permanece por mais tempo.
 
-Se não há veículos, o tempo do sinal verde é reduzido.
+---
 
-Se houver tráfego intenso, o sinal verde permanece mais tempo.
+### Sprint 3: Cruzamento Inteligente com Maquete Física
 
-🚗 Isso torna o sistema mais eficiente, simulando semáforos adaptativos usados em grandes cidades.
+🔗 [Acessar no Tinkercad](https://www.tinkercad.com/things/4wrWFSQffOk-sprint3)
 
-🚦🏙️ Protótipo Final – Sprint 3: Cruzamento Inteligente com Maquete Física
-🔗 Ver no Tinkercad
+**Novidades:**
 
-Cenário: Simulação de um cruzamento real, com duas vias se cruzando (em "T" ou "+").
+- **Melhoria no código:** Reestruturação para torná-lo mais modular e organizado.
+- **Divisão do sistema em dois Arduinos Uno:**
+  - Devido à limitação de entradas e saídas em um único Arduino.
+  - Facilitou o manuseio e a organização dos cabos.
+- **Construção de uma maquete física:**
+  - Criamos um modelo realista para testar os componentes e o comportamento do sistema na prática.
 
-🆕 Novidades da Sprint 3:
-Melhoria no código: Reestruturação para torná-lo mais modular, claro e organizado.
+**Funcionalidades Integradas:**
 
-Divisão do sistema em dois Arduinos Uno:
+- Controle de semáforo para duas vias independentes.
+- Botões para pedestres com controle de travessia segura.
+- Sensores IR para detectar presença de veículos.
+- Lógica de sincronização para evitar conflitos entre os sinais.
+- Ajuste dinâmico de tempos baseado no tráfego.
 
-Devido à limitação de entradas e saídas em um único Arduino.
+---
 
-Facilitou o manuseio e a organização dos cabos.
+## 🧩 Componentes Utilizados
 
-Construção de uma maquete física:
+| Quantidade | Componente                        |
+|------------|-----------------------------------|
+| 4          | LEDs Vermelhos (Veículos)         |
+| 4          | LEDs Amarelos (Veículos)          |
+| 4          | LEDs Verdes (Veículos)            |
+| 4          | LEDs Vermelhos (Pedestres)        |
+| 4          | LEDs Verdes (Pedestres)           |
+| 32         | Resistores de 220 Ω               |
+| 2          | Visores de 7 segmentos            |
+| 2          | Botões de pressão                 |
+| 2          | Placas de ensaio (Protoboards)    |
+| 2          | Placas Arduino Uno                |
+| Diversos   | Fios de conexão                   |
 
-Criamos um modelo realista para testar os componentes e o comportamento do sistema na prática.
+---
 
-📸 (Inserir aqui uma ou duas fotos da maquete)
+## 🖼️ Maquete Física
 
-🧩 Componentes Utilizados:
-4 LEDs vermelhos, 4 LEDs amarelos e 4 LEDs verdes para os semáforos dos veículos
+Abaixo, uma imagem da maquete construída para testes práticos:
 
-4 LEDs vermelhos e 4 LEDs verdes para os semáforos dos pedestres
+<p align="center">
+  <img src="URL_DA_IMAGEM" alt="Maquete do Semáforo Inteligente" width="600">
+</p>
 
-32 resistores (220 Ω)
+*Substitua `URL_DA_IMAGEM` pelo link da imagem hospedada.*
 
-2 visores de 7 segmentos
+---
 
-2 botões de pressão
+## ✅ Conclusão
 
-2 placas de ensaio (protoboards)
+Ao longo do desenvolvimento, evoluímos de um simples ciclo de LEDs para um sistema inteligente capaz de:
 
-2 placas Arduino Uno
+- Coordenar fluxos de veículos e pedestres com segurança.
+- Ajustar tempos de sinal de forma dinâmica e eficiente.
+- Simular cruzamentos reais com múltiplas vias e sensores.
+- Ser testado e validado em uma maquete física realista.
 
-Fios de conexão
+Este projeto demonstra, na prática, como integrar hardware (Arduino, sensores, LEDs, botões) e software (programação em C/C++) para criar soluções reais de mobilidade urbana.
 
-Funcionalidades Integradas:
-Controle de semáforo para duas vias independentes
+---
 
-Botões para pedestres com controle de travessia segura
+## 🤝 Como Contribuir
 
-Sensores IR para detectar presença de veículos
+Contribuições são bem-vindas! Sinta-se à vontade para:
 
-Lógica de sincronização para evitar conflitos entre os sinais
+- **Forkar** o repositório.
+- Criar uma **branch** para sua feature ou correção.
+- Enviar um **Pull Request** com suas alterações.
 
-Ajuste dinâmico de tempos baseado no tráfego
+---
 
-🧠 Código:
-
-Modular, com funções separadas para cada semáforo e pedestre
-
-Lógica de prioridade para atender pedestres no tempo certo
-
-Sistema reativo, que ajusta os sinais conforme o contexto
-
-🎯 Conclusão
-Durante o desenvolvimento, avançamos de um simples ciclo de LEDs para um sistema inteligente capaz de:
-
-Coordenar fluxos de veículos e pedestres com segurança
-
-Ajustar tempos de sinal de forma dinâmica e eficiente
-
-Simular cruzamentos reais com múltiplas vias e sensores
-
-Ser testado e validado em uma maquete física realista
-
-Esse projeto é uma excelente demonstração prática da integração entre hardware (Arduino, sensores, LEDs, botões) e software (programação em C/C++) para resolver problemas do mundo real — como o controle inteligente do tráfego urbano.
-
-💡 Explore os links no Tinkercad, clone o código e sinta-se livre para propor novas ideias!

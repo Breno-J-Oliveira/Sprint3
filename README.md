@@ -122,7 +122,7 @@ Abaixo, uma imagem da maquete construída para testes práticos:
   <img src="URL_DA_IMAGEM" alt="Maquete do Semáforo Inteligente" width="600">
 </p>
 
-*Substitua `URL_DA_IMAGEM` pelo link da imagem hospedada.*
+
 
 ---
 
@@ -138,14 +138,3 @@ Ao longo do desenvolvimento, evoluímos de um simples ciclo de LEDs para um sist
 Este projeto demonstra, na prática, como integrar hardware (Arduino, sensores, LEDs, botões) e software (programação em C/C++) para criar soluções reais de mobilidade urbana.
 
 ---
-
-## 🤝 Como Contribuir
-
-Contribuições são bem-vindas! Sinta-se à vontade para:
-
-- **Forkar** o repositório.
-- Criar uma **branch** para sua feature ou correção.
-- Enviar um **Pull Request** com suas alterações.
-
----
-

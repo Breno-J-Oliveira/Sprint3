@@ -1,4 +1,4 @@
-#🚦 Visão Geral do Projeto – Semáforo Inteligente
+🚦 Visão Geral do Projeto – Semáforo Inteligente
 Este projeto tem como objetivo desenvolver um semáforo inteligente, iniciando com conceitos básicos de Arduino e evoluindo até a simulação de um cruzamento urbano realista, com múltiplas vias, sensores e botões para pedestres. A cada etapa, o sistema foi sendo aprimorado com novas funcionalidades, tornando-o mais completo e funcional.
 
 🔧 Protótipo 1: Semáforo Básico

@@ -1,32 +1,145 @@
-# Prerequisites
-*.d
+#include <avr/io.h>
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+// ---------------------------------------------------
+//               IDENTIFICAÇÃO DA PLACA
+// ---------------------------------------------------
+#define ARDUINO_ID    2   // Colocar 1 no Uno A, 2 no Uno B
+const int SEMAFORO_ID = ARDUINO_ID;
 
-# Precompiled Headers
-*.gch
-*.pch
+// ---------------------------------------------------
+//                PARÂMETROS DE TEMPO
+// ---------------------------------------------------
+const int VERDE_1     = 10;   // Semáforo 1: 10 s de verde
+const int VERDE_2     = 7;    // Semáforo 2:  7 s de verde
+const int AMARELO     = 3000; // 3 s de amarelo
+const int PED_ESTADA  = 5000; // 5 s de travessia de pedestre
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+// ---------------------------------------------------
+//                   MAPA DE PINOS
+// ---------------------------------------------------
+// Carros (2 LEDs cada cor)
+const int VERDES[2]    = {2, 3};
+const int AMARELOS[2]  = {4, 5};
+const int VERMELHOS[2] = {6, 7};
 
-# Fortran module files
-*.mod
-*.smod
+// Pedestres
+const int PED_VERDE    = 8;
+const int PED_VERMELHO = 9;
+const int BOTAO_PED    = 10;
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+// Display 7 segmentos (segmentos A–F em A0–A5)
+const int SEG[6]       = {A0, A1, A2, A3, A4, A5};
 
-# Executables
-*.exe
-*.out
-*.app
+// DP via RESET
+#define PC6_MASK    (1 << PC6)
+
+// Dígitos 0–9 (ânodo comum)
+const byte DIG[10][6] = {
+  {0,0,0,0,0,0},{1,0,0,1,1,1},{0,0,1,0,0,1},
+  {0,0,0,0,1,1},{1,0,0,1,1,0},{0,1,0,0,1,0},
+  {0,1,0,0,0,0},{0,0,0,1,1,1},{0,0,0,0,0,0},
+  {0,0,0,0,1,0}
+};
+
+// ---------------------------------------------------
+//               FUNÇÕES AUXILIARES
+// ---------------------------------------------------
+void clearDisplay() {
+  for (int i = 0; i < 6; i++)
+    digitalWrite(SEG[i], HIGH); // anodo comum: HIGH apaga
+}
+void showDigit(int n) {
+  for (int i = 0; i < 6; i++)
+    digitalWrite(SEG[i], DIG[n][i] ? LOW : HIGH);
+}
+void countdown(int secs) {
+  for (int s = secs; s >= 0; s--) {
+    showDigit(s);
+    PORTC |= PC6_MASK; delay(100);
+    PORTC &= ~PC6_MASK; delay(900);
+  }
+}
+
+// ---------------------------------------------------
+//                      SETUP
+// ---------------------------------------------------
+void setup() {
+  // Configura LEDS carros
+  for (int i = 0; i < 2; i++) {
+    pinMode(VERDES[i], OUTPUT);    digitalWrite(VERDES[i], LOW);
+    pinMode(AMARELOS[i], OUTPUT);  digitalWrite(AMARELOS[i], LOW);
+    pinMode(VERMELHOS[i], OUTPUT); digitalWrite(VERMELHOS[i], LOW);
+  }
+  // LEDs pedestres
+  pinMode(PED_VERDE, OUTPUT);     digitalWrite(PED_VERDE, LOW);
+  pinMode(PED_VERMELHO, OUTPUT);  digitalWrite(PED_VERMELHO, LOW);
+  pinMode(BOTAO_PED, INPUT_PULLUP);
+
+  // Display
+  for (int i = 0; i < 6; i++) {
+    pinMode(SEG[i], OUTPUT);
+    digitalWrite(SEG[i], HIGH);
+  }
+  DDRC |= PC6_MASK;
+  PORTC &= ~PC6_MASK;
+
+  // Se somos o Semáforo 2, iniciamos em vermelho,
+  // aguardando o tempo de verde do Semáforo 1:
+  if (SEMAFORO_ID == 2) {
+    // Acende vermelho carros
+    for (int i = 0; i < 2; i++) digitalWrite(VERMELHOS[i], HIGH);
+    clearDisplay();
+    countdown(VERDE_1);
+    // Apaga vermelho
+    for (int i = 0; i < 2; i++) digitalWrite(VERMELHOS[i], LOW);
+  }
+}
+
+// ---------------------------------------------------
+//                       LOOP
+// ---------------------------------------------------
+void loop() {
+  // Define tempos relativos
+  int meuVerde   = (SEMAFORO_ID == 1 ? VERDE_1 : VERDE_2);
+  int outroVerde = (SEMAFORO_ID == 1 ? VERDE_2 : VERDE_1);
+
+  // —— FASE VERDE ——
+  for (int i = 0; i < 2; i++) {
+    digitalWrite(VERDES[i], HIGH);
+    digitalWrite(AMARELOS[i], LOW);
+    digitalWrite(VERMELHOS[i], LOW);
+  }
+  digitalWrite(PED_VERDE, LOW);
+  digitalWrite(PED_VERMELHO, HIGH);
+
+  clearDisplay();
+  countdown(meuVerde);
+
+  // Travessia de pedestres (se solicitada)
+  if (digitalRead(BOTAO_PED) == LOW) {
+    for (int i = 0; i < 2; i++) digitalWrite(VERDES[i], LOW);
+    digitalWrite(PED_VERDE, HIGH);
+    digitalWrite(PED_VERMELHO, LOW);
+    delay(PED_ESTADA);
+    digitalWrite(PED_VERDE, LOW);
+    digitalWrite(PED_VERMELHO, HIGH);
+  }
+
+  // —— FASE AMARELO ——
+  for (int i = 0; i < 2; i++) {
+    digitalWrite(VERDES[i], LOW);
+    digitalWrite(AMARELOS[i], HIGH);
+  }
+  delay(AMARELO);
+  for (int i = 0; i < 2; i++) digitalWrite(AMARELOS[i], LOW);
+
+  // —— FASE VERMELHO ——
+  for (int i = 0; i < 2; i++) {
+    digitalWrite(VERMELHOS[i], HIGH);
+  }
+
+  clearDisplay();
+  countdown(outroVerde);
+
+  for (int i = 0; i < 2; i++) digitalWrite(VERMELHOS[i], LOW);
+}

@@ -1,8 +1,8 @@
 # 🚦 Semáforo Inteligente com Arduino
 
 <p align="center">
-  <img src="https://img.shields.io/badge/status-em%20desenvolvimento-brightgreen?style=for-the-badge" alt="Status do Projeto">
-  <img src="https://img.shields.io/badge/vers%C3%A3o-sprint%203-blue?style=for-the-badge" alt="Versão">
+  <img src="https://img.shields.io/badge/status-concluído-black?style=for-the-badge" alt="Status do Projeto">
+  <img src="https://img.shields.io/badge/vers%C3%A3o-final-blue?style=for-the-badge" alt="Versão">
 </p>
 
 ## 📌 Índice
@@ -22,7 +22,7 @@
 
 ## 🧠 Sobre o Projeto
 
-Este projeto visa desenvolver um **semáforo inteligente** utilizando a plataforma Arduino. Iniciamos com conceitos básicos de controle de LEDs e evoluímos para a simulação de um cruzamento urbano realista, incorporando sensores infravermelhos, botões para pedestres e uma maquete física para testes práticos.
+Este projeto tem como objetivo o desenvolvimento de um **semáforo inteligente** utilizando a plataforma Arduino. Iniciamos com conceitos básicos de controle de LEDs e evoluímos até simular um cruzamento urbano realista, incorporando sensores infravermelhos, botões para pedestres e uma maquete física para testes.
 
 ---
 
@@ -32,9 +32,7 @@ Este projeto visa desenvolver um **semáforo inteligente** utilizando a platafor
 
 🔗 [Acessar no Tinkercad](https://www.tinkercad.com/things/crLNLab5RRq-trabalha01)
 
-**Objetivo:** Compreender a conexão de LEDs ao Arduino e programar a sequência de sinais.
-
-**Funcionamento:**
+**Objetivo:** Compreender o funcionamento de LEDs com Arduino e a lógica básica de semáforo.
 
 ```plaintext
 1. LED verde acende por 5 segundos
@@ -49,13 +47,13 @@ Este projeto visa desenvolver um **semáforo inteligente** utilizando a platafor
 
 🔗 [Acessar no Tinkercad](https://www.tinkercad.com/things/fGDRABPrAXn-trabalho02)
 
-**Novidade:** Implementação de um botão que permite aos pedestres solicitar a travessia.
+**Novidade:** Inclusão de um botão que permite aos pedestres solicitar a travessia.
 
 **Funcionamento:**
 
 - O botão pode ser pressionado a qualquer momento.
-- O sistema armazena o pedido e aguarda o momento seguro para ativar o semáforo dos pedestres.
-- O semáforo de veículos fica vermelho e o LED verde para pedestres acende, permitindo a travessia.
+- O pedido é armazenado até o momento seguro de travessia.
+- O semáforo de veículos fica vermelho e o LED verde para pedestres acende.
 
 ---
 
@@ -63,13 +61,13 @@ Este projeto visa desenvolver um **semáforo inteligente** utilizando a platafor
 
 🔗 [Acessar no Tinkercad](https://www.tinkercad.com/things/lXt8ejKZsI6-trabalho03)
 
-**Novidade:** Inclusão de sensor infravermelho (IR) para detectar a presença de veículos.
+**Novidade:** Inclusão de sensor IR para detecção de veículos.
 
 **Funcionamento:**
 
-- O sensor monitora a presença de carros na via.
-- Se não há veículos, o tempo do sinal verde é reduzido.
-- Se houver tráfego intenso, o sinal verde permanece por mais tempo.
+- Detecta presença de carros.
+- Se não houver veículos, o tempo do sinal verde é reduzido.
+- Em caso de tráfego, o sinal verde se estende.
 
 ---
 
@@ -77,22 +75,19 @@ Este projeto visa desenvolver um **semáforo inteligente** utilizando a platafor
 
 🔗 [Acessar no Tinkercad](https://www.tinkercad.com/things/4wrWFSQffOk-sprint3)
 
-**Novidades:**
+**Destaques:**
 
-- **Melhoria no código:** Reestruturação para torná-lo mais modular e organizado.
-- **Divisão do sistema em dois Arduinos Uno:**
-  - Devido à limitação de entradas e saídas em um único Arduino.
-  - Facilitou o manuseio e a organização dos cabos.
-- **Construção de uma maquete física:**
-  - Criamos um modelo realista para testar os componentes e o comportamento do sistema na prática.
+- Código reorganizado e modularizado.
+- Divisão do sistema em **dois Arduinos Uno**, otimizando o número de portas.
+- Construção de **maquete física funcional** para testes realistas.
 
-**Funcionalidades Integradas:**
+**Funcionalidades:**
 
-- Controle de semáforo para duas vias independentes.
-- Botões para pedestres com controle de travessia segura.
-- Sensores IR para detectar presença de veículos.
-- Lógica de sincronização para evitar conflitos entre os sinais.
-- Ajuste dinâmico de tempos baseado no tráfego.
+- Controle de semáforos para duas vias.
+- Botões de travessia para pedestres.
+- Sensores IR para veículos.
+- Lógica de sincronização inteligente entre sinais.
+- Ajuste automático de tempos com base no tráfego.
 
 ---
 
@@ -122,19 +117,27 @@ Abaixo, uma imagem da maquete construída para testes práticos:
   <img src="URL_DA_IMAGEM" alt="Maquete do Semáforo Inteligente" width="600">
 </p>
 
-
-
 ---
 
 ## ✅ Conclusão
 
-Ao longo do desenvolvimento, evoluímos de um simples ciclo de LEDs para um sistema inteligente capaz de:
+Durante a jornada de desenvolvimento, partimos de um simples ciclo de LEDs até um sistema inteligente de controle de tráfego, que:
 
-- Coordenar fluxos de veículos e pedestres com segurança.
-- Ajustar tempos de sinal de forma dinâmica e eficiente.
-- Simular cruzamentos reais com múltiplas vias e sensores.
-- Ser testado e validado em uma maquete física realista.
+- Coordena veículos e pedestres de forma segura.
+- Ajusta dinamicamente os tempos com base no tráfego.
+- Integra sensores e botões de forma eficiente.
+- Funciona plenamente em uma maquete física.
 
-Este projeto demonstra, na prática, como integrar hardware (Arduino, sensores, LEDs, botões) e software (programação em C/C++) para criar soluções reais de mobilidade urbana.
+Este projeto exemplifica como **hardware e software** podem se unir para resolver desafios reais de mobilidade urbana.
+
+---
+
+## 🤝 Como Contribuir
+
+1. Faça um fork do projeto.
+2. Crie uma branch com sua feature: `git checkout -b minha-feature`.
+3. Commit suas alterações: `git commit -m 'feat: Minha nova feature'`.
+4. Faça um push para a sua branch: `git push origin minha-feature`.
+5. Abra um Pull Request.
 
 ---

@@ -111,10 +111,8 @@ Este projeto tem como objetivo o desenvolvimento de um **semáforo inteligente**
 
 ## 🖼️ Maquete Física
 
-Abaixo, uma imagem da maquete construída para testes práticos:
-
 <p align="center">
-  <img src="URL_DA_IMAGEM" alt="Maquete do Semáforo Inteligente" width="600">
+  <img src="file:///C:/Users/ffbre/OneDrive/Área%20de%20Trabalho/Imagem%20do%20WhatsApp%20de%202025-05-30%20à(s)%2012.21.28_5bff4d85.jpg" alt="Maquete do Semáforo Inteligente" width="600">
 </p>
 
 ---
@@ -129,15 +127,5 @@ Durante a jornada de desenvolvimento, partimos de um simples ciclo de LEDs até 
 - Funciona plenamente em uma maquete física.
 
 Este projeto exemplifica como **hardware e software** podem se unir para resolver desafios reais de mobilidade urbana.
-
----
-
-## 🤝 Como Contribuir
-
-1. Faça um fork do projeto.
-2. Crie uma branch com sua feature: `git checkout -b minha-feature`.
-3. Commit suas alterações: `git commit -m 'feat: Minha nova feature'`.
-4. Faça um push para a sua branch: `git push origin minha-feature`.
-5. Abra um Pull Request.
 
 ---

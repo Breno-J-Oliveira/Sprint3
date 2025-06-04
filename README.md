@@ -112,7 +112,7 @@ Este projeto tem como objetivo o desenvolvimento de um **semáforo inteligente**
 ## 🖼️ Maquete Física
 
 <p align="center">
-  <img src="file:///C:/Users/ffbre/OneDrive/Área%20de%20Trabalho/Imagem%20do%20WhatsApp%20de%202025-05-30%20à(s)%2012.21.28_5bff4d85.jpg" alt="Maquete do Semáforo Inteligente" width="600">
+  <img src="Url_Image" alt="file:///C:/Users/ffbre/OneDrive/Área%20de%20Trabalho/Imagem%20do%20WhatsApp%20de%202025-05-30%20à(s)%2012.21.28_5bff4d85.jpg" width="600">
 </p>
 
 ---

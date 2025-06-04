@@ -85,7 +85,6 @@ Este projeto tem como objetivo o desenvolvimento de um **semáforo inteligente**
 
 - Controle de semáforos para duas vias.
 - Botões de travessia para pedestres.
-- Sensores IR para veículos.
 - Lógica de sincronização inteligente entre sinais.
 - Ajuste automático de tempos com base no tráfego.
 
@@ -106,14 +105,6 @@ Este projeto tem como objetivo o desenvolvimento de um **semáforo inteligente**
 | 2          | Placas de ensaio (Protoboards)    |
 | 2          | Placas Arduino Uno                |
 | Diversos   | Fios de conexão                   |
-
----
-
-## 🖼️ Maquete Física
-
-<p align="center">
-  <img src="Url_Image" alt="file:///C:/Users/ffbre/OneDrive/Área%20de%20Trabalho/Imagem%20do%20WhatsApp%20de%202025-05-30%20à(s)%2012.21.28_5bff4d85.jpg" width="600">
-</p>
 
 ---
 

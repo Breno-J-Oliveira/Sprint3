@@ -1,145 +1,135 @@
-#include <avr/io.h>
-
-// ---------------------------------------------------
-//               IDENTIFICAÇÃO DA PLACA
-// ---------------------------------------------------
-#define ARDUINO_ID    2   // Colocar 1 no Uno A, 2 no Uno B
+// -------------------- IDENTIFICAÇÃO DA PLACA --------------------
+#define ARDUINO_ID 1 // Colocar 1 no Uno A, 2 no Uno B
 const int SEMAFORO_ID = ARDUINO_ID;
 
-// ---------------------------------------------------
-//                PARÂMETROS DE TEMPO
-// ---------------------------------------------------
-const int VERDE_1     = 10;   // Semáforo 1: 10 s de verde
-const int VERDE_2     = 7;    // Semáforo 2:  7 s de verde
-const int AMARELO     = 3000; // 3 s de amarelo
-const int PED_ESTADA  = 5000; // 5 s de travessia de pedestre
+// -------------------- PARÂMETROS DE TEMPO --------------------
+const int VERDE_1     = 10;     // Tempo de verde do Semáforo 1 (s)
+const int VERDE_2     = 7;      // Tempo de verde do Semáforo 2 (s)
+const int AMARELO     = 3000;   // Tempo do amarelo (ms)
+const int PED_ESTADA  = 5;      // Tempo de travessia de pedestres (s)
 
-// ---------------------------------------------------
-//                   MAPA DE PINOS
-// ---------------------------------------------------
-// Carros (2 LEDs cada cor)
-const int VERDES[2]    = {2, 3};
-const int AMARELOS[2]  = {4, 5};
-const int VERMELHOS[2] = {6, 7};
+// -------------------- MAPA DE PINOS --------------------
+const int VERDE_CARRO    = 2;
+const int AMARELO_CARRO  = 3;
+const int VERMELHO_CARRO = 4;
+const int PED_VERDE      = 5;
+const int PED_VERMELHO   = 6;
+const int BOTAO_PED      = 7;
 
-// Pedestres
-const int PED_VERDE    = 8;
-const int PED_VERMELHO = 9;
-const int BOTAO_PED    = 10;
+// Display 7 segmentos (segmentos A–F nos pinos 8–13)
+const int SEG[6] = {8, 9, 10, 11, 12, 13};
 
-// Display 7 segmentos (segmentos A–F em A0–A5)
-const int SEG[6]       = {A0, A1, A2, A3, A4, A5};
-
-// DP via RESET
-#define PC6_MASK    (1 << PC6)
-
-// Dígitos 0–9 (ânodo comum)
+// Dígitos de 0 a 9 usando segmentos A–F (sem G), para ânodo comum
 const byte DIG[10][6] = {
-  {0,0,0,0,0,0},{1,0,0,1,1,1},{0,0,1,0,0,1},
-  {0,0,0,0,1,1},{1,0,0,1,1,0},{0,1,0,0,1,0},
-  {0,1,0,0,0,0},{0,0,0,1,1,1},{0,0,0,0,0,0},
-  {0,0,0,0,1,0}
+  {0, 0, 0, 0, 0, 0}, // 0
+  {1, 0, 0, 1, 1, 1}, // 1
+  {0, 0, 1, 0, 0, 1}, // 2
+  {0, 0, 0, 0, 1, 1}, // 3
+  {1, 0, 0, 1, 0, 0}, // 4
+  {0, 1, 0, 0, 1, 0}, // 5
+  {0, 1, 0, 0, 0, 0}, // 6
+  {0, 0, 0, 1, 1, 1}, // 7
+  {0, 0, 0, 0, 0, 0}, // 8
+  {0, 0, 0, 0, 1, 0}  // 9
 };
 
-// ---------------------------------------------------
-//               FUNÇÕES AUXILIARES
-// ---------------------------------------------------
+// -------------------- VARIÁVEIS GLOBAIS --------------------
+bool pedidoPedestre = false;
+
+// -------------------- FUNÇÕES AUXILIARES --------------------
 void clearDisplay() {
   for (int i = 0; i < 6; i++)
     digitalWrite(SEG[i], HIGH); // anodo comum: HIGH apaga
 }
+
 void showDigit(int n) {
+  if (n < 0 || n > 9) return;
   for (int i = 0; i < 6; i++)
     digitalWrite(SEG[i], DIG[n][i] ? LOW : HIGH);
 }
-void countdown(int secs) {
-  for (int s = secs; s >= 0; s--) {
-    showDigit(s);
-    PORTC |= PC6_MASK; delay(100);
-    PORTC &= ~PC6_MASK; delay(900);
+
+void displayContagem(int segundos) {
+  for (int s = segundos; s > 0; s--) {
+    showDigit(s % 10);
+    delay(1000);
   }
+  clearDisplay();
 }
 
-// ---------------------------------------------------
-//                      SETUP
-// ---------------------------------------------------
-void setup() {
-  // Configura LEDS carros
-  for (int i = 0; i < 2; i++) {
-    pinMode(VERDES[i], OUTPUT);    digitalWrite(VERDES[i], LOW);
-    pinMode(AMARELOS[i], OUTPUT);  digitalWrite(AMARELOS[i], LOW);
-    pinMode(VERMELHOS[i], OUTPUT); digitalWrite(VERMELHOS[i], LOW);
+void ativaSemaforoCarro(bool verde, bool amarelo, bool vermelho) {
+  digitalWrite(VERDE_CARRO, verde ? HIGH : LOW);
+  digitalWrite(AMARELO_CARRO, amarelo ? HIGH : LOW);
+  digitalWrite(VERMELHO_CARRO, vermelho ? HIGH : LOW);
+}
+
+void ativaSemaforoPedestre(bool verde, bool vermelho) {
+  digitalWrite(PED_VERDE, verde ? HIGH : LOW);
+  digitalWrite(PED_VERMELHO, vermelho ? HIGH : LOW);
+}
+
+void verificaPedidoPedestre(int tempoVerde) {
+  pedidoPedestre = false;
+  for (int i = tempoVerde; i > 0; i--) {
+    if (digitalRead(BOTAO_PED) == LOW) pedidoPedestre = true;
+    showDigit(i % 10);
+    delay(1000);
   }
-  // LEDs pedestres
-  pinMode(PED_VERDE, OUTPUT);     digitalWrite(PED_VERDE, LOW);
-  pinMode(PED_VERMELHO, OUTPUT);  digitalWrite(PED_VERMELHO, LOW);
+  clearDisplay();
+}
+
+void esperaOutroSemaforo(int tempoOutroVerde) {
+  ativaSemaforoCarro(false, false, true);  // carro parado
+  ativaSemaforoPedestre(true, false);      // pedestre atravessa
+  displayContagem(tempoOutroVerde);        // conta tempo
+  ativaSemaforoPedestre(false, true);      // pedestre para
+}
+
+// -------------------- SETUP --------------------
+void setup() {
+  pinMode(VERDE_CARRO, OUTPUT);
+  pinMode(AMARELO_CARRO, OUTPUT);
+  pinMode(VERMELHO_CARRO, OUTPUT);
+  pinMode(PED_VERDE, OUTPUT);
+  pinMode(PED_VERMELHO, OUTPUT);
   pinMode(BOTAO_PED, INPUT_PULLUP);
 
-  // Display
   for (int i = 0; i < 6; i++) {
     pinMode(SEG[i], OUTPUT);
-    digitalWrite(SEG[i], HIGH);
+    digitalWrite(SEG[i], HIGH); // apaga display
   }
-  DDRC |= PC6_MASK;
-  PORTC &= ~PC6_MASK;
 
-  // Se somos o Semáforo 2, iniciamos em vermelho,
-  // aguardando o tempo de verde do Semáforo 1:
+  ativaSemaforoPedestre(false, true); // pedestre começa parado
+
   if (SEMAFORO_ID == 2) {
-    // Acende vermelho carros
-    for (int i = 0; i < 2; i++) digitalWrite(VERMELHOS[i], HIGH);
-    clearDisplay();
-    countdown(VERDE_1);
-    // Apaga vermelho
-    for (int i = 0; i < 2; i++) digitalWrite(VERMELHOS[i], LOW);
+    esperaOutroSemaforo(VERDE_1);
   }
 }
 
-// ---------------------------------------------------
-//                       LOOP
-// ---------------------------------------------------
+// -------------------- LOOP PRINCIPAL --------------------
 void loop() {
-  // Define tempos relativos
-  int meuVerde   = (SEMAFORO_ID == 1 ? VERDE_1 : VERDE_2);
-  int outroVerde = (SEMAFORO_ID == 1 ? VERDE_2 : VERDE_1);
+  int tempoVerde   = (SEMAFORO_ID == 1 ? VERDE_1 : VERDE_2);
+  int tempoOutro   = (SEMAFORO_ID == 1 ? VERDE_2 : VERDE_1);
 
-  // —— FASE VERDE ——
-  for (int i = 0; i < 2; i++) {
-    digitalWrite(VERDES[i], HIGH);
-    digitalWrite(AMARELOS[i], LOW);
-    digitalWrite(VERMELHOS[i], LOW);
-  }
-  digitalWrite(PED_VERDE, LOW);
-  digitalWrite(PED_VERMELHO, HIGH);
+  // —— FASE VERDE —— carros andando
+  ativaSemaforoCarro(true, false, false);
+  ativaSemaforoPedestre(false, true); // pedestre parado
+  verificaPedidoPedestre(tempoVerde);
 
-  clearDisplay();
-  countdown(meuVerde);
-
-  // Travessia de pedestres (se solicitada)
-  if (digitalRead(BOTAO_PED) == LOW) {
-    for (int i = 0; i < 2; i++) digitalWrite(VERDES[i], LOW);
-    digitalWrite(PED_VERDE, HIGH);
-    digitalWrite(PED_VERMELHO, LOW);
-    delay(PED_ESTADA);
-    digitalWrite(PED_VERDE, LOW);
-    digitalWrite(PED_VERMELHO, HIGH);
+  // —— FASE PEDRESTRE —— se houver pedido durante o verde dos carros
+  if (pedidoPedestre) {
+    ativaSemaforoCarro(false, false, true);  // carro para
+    ativaSemaforoPedestre(true, false);      // pedestre anda
+    displayContagem(PED_ESTADA);
+    ativaSemaforoPedestre(false, true);      // pedestre para
   }
 
-  // —— FASE AMARELO ——
-  for (int i = 0; i < 2; i++) {
-    digitalWrite(VERDES[i], LOW);
-    digitalWrite(AMARELOS[i], HIGH);
-  }
+  // —— FASE AMARELA —— transição
+  ativaSemaforoCarro(false, true, false);
   delay(AMARELO);
-  for (int i = 0; i < 2; i++) digitalWrite(AMARELOS[i], LOW);
 
-  // —— FASE VERMELHO ——
-  for (int i = 0; i < 2; i++) {
-    digitalWrite(VERMELHOS[i], HIGH);
-  }
+  // —— FASE VERMELHA —— carros parados, pedestre pode atravessar
+  esperaOutroSemaforo(tempoOutro);
 
-  clearDisplay();
-  countdown(outroVerde);
-
-  for (int i = 0; i < 2; i++) digitalWrite(VERMELHOS[i], LOW);
+  // —— RESET luzes —— antes de voltar para verde
+  ativaSemaforoCarro(false, false, false);
 }
